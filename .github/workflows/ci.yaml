@@ -65,10 +65,11 @@ jobs:
           mkdir -vp ~/.local/share/godot/export_templates/${GODOT_VERSION}.${GODOT_PATCH_VERSION}
           mv templates/* ~/.local/share/godot/export_templates/${GODOT_VERSION}.${GODOT_PATCH_VERSION}
 
-          mv Godot_v${GODOT_VERSION}-${GODOT_PATCH_VERSION}_linux.x86_64 godot
+          mv Godot_v${GODOT_VERSION}-${GODOT_PATCH_VERSION}_linux.x86_64 /usr/local/bin/godot
 
           rm -R templates/
           rm templates.tpz godot.zip
+          ls -la /usr/local/bin
       
       - name: Export Godot project
         run: |

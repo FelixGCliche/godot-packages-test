@@ -44,3 +44,4 @@ Thumbs.db
 
 /build
 /addons/*/build
+.godot

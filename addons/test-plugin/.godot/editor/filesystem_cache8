@@ -5,4 +5,4 @@ package.json::JSON::-1::1725130694::0::1::::<><>::
 plugin.cfg::TextFile::-1::1725055987::0::1::::<><>::
 scn_test_plugin.tscn::PackedScene::4627103325969274289::1725060559::0::1::::<><>::
 test-plugin.gd::GDScript::-1::1725056057::0::1::::<>EditorPlugin<>::
-::res://build/::1725130905
+::res://build/::1725134070

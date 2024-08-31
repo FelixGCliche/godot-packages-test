@@ -3,7 +3,8 @@
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
-    "build": "godot --headless --export-release"
+    "prepare": "mkdir",
+    "build": "godot --headless --export-release ${npm_config_exportPath}"
   },
   "private": true,
   "dependencies": {},

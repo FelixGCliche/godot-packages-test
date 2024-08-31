@@ -1,14 +1,16 @@
 ea4bc82a6ad023ab7ee23ee620429895
-::res://::1725131769
+::res://::1725134120
 export_presets.cfg::TextFile::-1::1725059331::0::1::::<><>::
-nx.json::JSON::-1::1725055950::0::1::::<><>::
+nx.json::JSON::-1::1725133679::0::1::::<><>::
 package-lock.json::JSON::-1::1725055936::0::1::::<><>::
-package.json::JSON::-1::1725130754::0::1::::<><>::
+package.json::JSON::-1::1725133897::0::1::::<><>::
 pnpm-lock.yaml::TextFile::-1::1725131769::0::1::::<><>::
 pnpm-workspace.yaml::TextFile::-1::1725058467::0::1::::<><>::
 README.md::TextFile::-1::1725054664::0::1::::<><>::
+::res://${npm_config_exportPath}/::1725133655
+::res://--exportPath=win64/::1725134120
 ::res://addons/::1725055987
-::res://build/::1725130907
+::res://build/::1725134071
 ::res://node_modules/::1725131769
 .modules.yaml::TextFile::-1::1725131769::0::1::::<><>::
 ::res://node_modules/@nx/::1725131541
@@ -196,3 +198,4 @@ schema.json::JSON::-1::1724792109::0::1::::<><>::
 ::res://node_modules/nx/tasks-runners/::1725131540
 ::res://src/::1725059283
 scn_main.tscn::PackedScene::8203963969804967653::1725059278::0::1::::<><>::
+::res://win64/::1725134064
