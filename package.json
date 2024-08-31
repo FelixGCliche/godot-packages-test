@@ -1,13 +1,15 @@
 {
-  "name": "@godot-packages-test/source",
+  "name": "godot-packages-test",
   "version": "0.0.0",
   "license": "MIT",
-  "scripts": {},
+  "scripts": {
+    "build": "godot --headless --export-release"
+  },
   "private": true,
   "dependencies": {},
   "devDependencies": {
-    "@nx/js": "19.6.4",
     "@nx/workspace": "19.6.4",
     "nx": "19.6.4"
-  }
+  },
+  "nx": {}
 }
