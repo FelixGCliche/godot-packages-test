@@ -35,12 +35,12 @@ jobs:
           lfs: true
 
       - name: Setup PNPM
-        uses: pnpm/action-setup@v2
+        uses: pnpm/action-setup@v4
         with:
           version: 8
       
       - name: Setup Node
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: 'pnpm'
@@ -74,10 +74,11 @@ jobs:
       
       - name: Export Godot project
         run: |
-          pnpm exec nx affected -t prebuild -- build-${{ matrix.targetPlatform.name }}
+          pnpm exec nx affected -t setup -- build-${{ matrix.targetPlatform.name }}
           pnpm exec nx affected -t build -- ${{ matrix.targetPlatform.name }} build-${{ matrix.targetPlatform.name }}/${{ matrix.targetPlatform.path }}
       
-      - name: Generate artifacts
+      - name: Generate Win64 artifacts
+        if: ${{ matrix.targetPlatform.name == 'win64'}}
         uses: actions/upload-artifact@v4
         with:
           name: build-${{ matrix.targetPlatform.name }}
@@ -85,29 +86,35 @@ jobs:
             build-${{ matrix.targetPlatform.name }}
             addons/**/build-${{ matrix.targetPlatform.name }}
           retention-days: 1
+      
+      - name: Generate HTML5 artifacts
+        if: ${{ matrix.targetPlatform.name == 'html5'}}
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-${{ matrix.targetPlatform.name }}
+          path: |
+            build-${{ matrix.targetPlatform.name }}
+          retention-days: 1
  
-  # deploy:
-  #   name: Deploy on Github Pages
-  #   needs: export
-  #   runs-on: ubuntu-latest
-  #   # runs-on: self-hosted
-  #   steps: 
-  #     - name: Download export artifacts
-  #       uses: actions/download-artifact@v4
-  #       with: 
-  #         name: build-html5
-  #     - name: Add coi-service-worker
-  #       run: |
-  #         git clone https://github.com/gzuidhof/coi-serviceworker.git
-  #         mv coi-serviceworker/coi-serviceworker.min.js ./coi-serviceworker.min.js
-  #         rm -R coi-serviceworker
-  #         ls -a
-  #     - name: Setup Pages
-  #       uses: actions/configure-pages@v5
-  #     - name: Upload artifact
-  #       uses: actions/upload-pages-artifact@v3
-  #       with:
-  #         path: '.'
-  #     - name: Deploy to GitHub Pages
-  #       id: deployment
-  #       uses: actions/deploy-pages@v4
+  deploy:
+    name: Deploy on Github Pages
+    needs: export
+    runs-on: ubuntu-latest
+    # runs-on: self-hosted
+    steps: 
+      - name: Download export artifacts
+        uses: actions/download-artifact@v4
+        with: 
+          name: build-html5
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: '.'
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

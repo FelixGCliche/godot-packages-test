@@ -4,7 +4,7 @@
   "author": "Incredibold",
   "license": "MIT",
   "scripts": {
-    "prebuild": "mkdir -vp",
+    "setup": "mkdir -vp",
     "build": "godot --headless --export-release"
   },
   "private": true,
