@@ -1,10 +1,11 @@
 {
   "name": "godot-packages-test",
   "version": "0.0.0",
+  "author": "Incredibold",
   "license": "MIT",
   "scripts": {
-    "prepare": "mkdir",
-    "build": "godot --headless --export-release ${npm_config_exportPath}"
+    "prebuild": "mkdir -vp",
+    "build": "godot --headless --export-release"
   },
   "private": true,
   "dependencies": {},
