@@ -41,6 +41,20 @@ Thumbs.db
 .nx/cache
 .nx/workspace-data
 
+# Godot 4+ specific ignores
+.godot/
+addons/*/.godot/
 
+# Godot-specific ignores
+.import/
+export.cfg
+
+# Imported translations (automatically generated from CSV files)
+*.translation.godot/
+
+# Project-specific ignores
 /build
 /addons/*/build
+
+# GdUnit ignores
+/reports

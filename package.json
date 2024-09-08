@@ -1,9 +1,12 @@
 {
   "name": "godot-packages-test",
   "version": "0.0.0",
+  "author": "Incredibold",
   "license": "MIT",
   "scripts": {
-    "build": "godot --headless --export-release"
+    "setup": "mkdir -vp",
+    "build": "godot --headless --export-release",
+    "lint": "gdlint src/"
   },
   "private": true,
   "dependencies": {},

@@ -15,6 +15,8 @@ importers:
         specifier: 19.6.4
         version: 19.6.4
 
+  addons/test-plugin: {}
+
 packages:
 
   '@emnapi/core@1.2.0':
