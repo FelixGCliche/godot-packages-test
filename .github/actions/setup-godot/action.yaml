@@ -12,6 +12,6 @@ inputs:
 runs:
   using: docker
   image: Dockerfile
-  args: 
-    - ${{ inputs.godot-version }}
-    - ${{ inputs.godot-patch-version }}
+  env: 
+    GODOT_VERSION: ${{ inputs.godot-version }}
+    GODOT_PATCH_VERSION: ${{ inputs.godot-patch-version }}
