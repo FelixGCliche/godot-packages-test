@@ -6,7 +6,7 @@
     "setup": "mkdir -vp",
     "build": "godot --headless --export-release",
     "lint": "gdlint .",
-    "test": "../gdUnit4/runtest.sh -a --ignoreHeadlessMode tests/"
+    "test": "runtest.sh -a --ignoreHeadlessMode tests/"
   },
   "author": "Incredibold",
   "license": "MIT"
