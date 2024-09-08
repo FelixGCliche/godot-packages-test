@@ -23,8 +23,9 @@ jobs:
         with:
           fetch-depth: 0
           lfs: true
+
       - name: Test
-        uses: ./.github/actions/setup-godot@master
+        uses: ./.github/actions/setup-godot
         with:
           godot-version: ${{env.GODOT_VERSION}}
           godot-patch-version: ${{env.GODOT_PATCH_VERSION }}
