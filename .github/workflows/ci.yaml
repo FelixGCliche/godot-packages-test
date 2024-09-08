@@ -14,127 +14,135 @@ permissions:
   pages: write
   id-token: write
   
-
 jobs:
-  export:
-    name: Export for ${{ matrix.targetPlatform.name }}
+  test:
     runs-on: ubuntu-latest
-    # runs-on: [self-hosted, "${{ matrix.targetPlatform.name }}"]
-    strategy:
-      fail-fast: false
-      matrix:
-        targetPlatform: [
-          { name: win64, path: build.exe },
-          { name: html5, path: index.html }
-        ]
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-          lfs: true
-
-      - name: Setup PNPM
-        uses: pnpm/action-setup@v4
-        with:
-          version: 8
-      
-      - name: Setup Node
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20
-          cache: 'pnpm'
-
-      - name: PNPM Install
-        run: pnpm install
-
-      - name: Setup NX
-        uses: nrwl/nx-set-shas@v4
-  
-      - name: Download Godot executable and templates
-        env: 
-          GODOT_URL: "https://github.com/godotengine/godot/releases/download/${{ env.GODOT_VERSION }}-${{ env.GODOT_PATCH_VERSION }}/Godot_v${{ env.GODOT_VERSION }}-${{ env.GODOT_PATCH_VERSION }}_linux.x86_64.zip"
-          GODOT_TEMPLATES_URL: "https://github.com/godotengine/godot/releases/download/${{ env.GODOT_VERSION }}-${{ env.GODOT_PATCH_VERSION }}/Godot_v${{ env.GODOT_VERSION }}-${{ env.GODOT_PATCH_VERSION }}_export_templates.tpz"
-        run: |
-          echo ${GODOT_URL}
-          curl -L ${GODOT_URL} > godot.zip
-          curl -L ${GODOT_TEMPLATES_URL} > templates.tpz
-
-          unzip godot.zip
-          unzip templates.tpz
-
-          mkdir -vp ~/.local/share/godot/export_templates/${GODOT_VERSION}.${GODOT_PATCH_VERSION}
-          mv templates/* ~/.local/share/godot/export_templates/${GODOT_VERSION}.${GODOT_PATCH_VERSION}
-
-          mv Godot_v${GODOT_VERSION}-${GODOT_PATCH_VERSION}_linux.x86_64 /usr/local/bin/godot
-
-          rm -R templates/
-          rm templates.tpz godot.zip
-          ls -la /usr/local/bin
-      
-      - name: Setup Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.10' 
-
-      - name: Install GD Toolkit
-        run: pip3 install "gdtoolkit==4.*"
-
-      - name: Import Godot Project
-        run: godot --headless --import
-
-      - name: Lint
-        run: pnpm exec nx affected -t lint
-
       - name: Test
-        run: |
-          export GODOT_BIN=/usr/local/bin/godot
-          chmod +x addons/gdUnit4/runtest.sh
-          pnpm exec nx affected -t test
+        uses: ./.github/actions/setup-godot@master
+        with:
+          godot-version: ${{env.GODOT_VERSION}}
+          godot-patch-version: ${{env.GODOT_PATCH_VERSION }}
+# jobs:
+#   export:
+#     name: Export for ${{ matrix.targetPlatform.name }}
+#     runs-on: ubuntu-latest
+#     # runs-on: [self-hosted, "${{ matrix.targetPlatform.name }}"]
+#     strategy:
+#       fail-fast: false
+#       matrix:
+#         targetPlatform: [
+#           { name: win64, path: build.exe },
+#           { name: html5, path: index.html }
+#         ]
+#     steps:
+#       - name: Checkout
+#         uses: actions/checkout@v4
+#         with:
+#           fetch-depth: 0
+#           lfs: true
 
-      - name: Export Godot project
-        run: |
-          pnpm exec nx affected -t setup -- build-${{ matrix.targetPlatform.name }}
-          pnpm exec nx affected -t build -- ${{ matrix.targetPlatform.name }} build-${{ matrix.targetPlatform.name }}/${{ matrix.targetPlatform.path }}
+#       - name: Setup PNPM
+#         uses: pnpm/action-setup@v4
+#         with:
+#           version: 8
       
-      - name: Generate Win64 artifacts
-        if: ${{ matrix.targetPlatform.name == 'win64'}}
-        uses: actions/upload-artifact@v4
-        with:
-          name: build-${{ matrix.targetPlatform.name }}
-          path: |
-            build-${{ matrix.targetPlatform.name }}
-            addons/**/build-${{ matrix.targetPlatform.name }}
-          retention-days: 1
+#       - name: Setup Node
+#         uses: actions/setup-node@v4
+#         with:
+#           node-version: 20
+#           cache: 'pnpm'
+
+#       - name: PNPM Install
+#         run: pnpm install
+
+#       - name: Setup NX
+#         uses: nrwl/nx-set-shas@v4
+  
+#       - name: Download Godot executable and templates
+#         env: 
+#           GODOT_URL: "https://github.com/godotengine/godot/releases/download/${{ env.GODOT_VERSION }}-${{ env.GODOT_PATCH_VERSION }}/Godot_v${{ env.GODOT_VERSION }}-${{ env.GODOT_PATCH_VERSION }}_linux.x86_64.zip"
+#           GODOT_TEMPLATES_URL: "https://github.com/godotengine/godot/releases/download/${{ env.GODOT_VERSION }}-${{ env.GODOT_PATCH_VERSION }}/Godot_v${{ env.GODOT_VERSION }}-${{ env.GODOT_PATCH_VERSION }}_export_templates.tpz"
+#         run: |
+#           echo ${GODOT_URL}
+#           curl -L ${GODOT_URL} > godot.zip
+#           curl -L ${GODOT_TEMPLATES_URL} > templates.tpz
+
+#           unzip godot.zip
+#           unzip templates.tpz
+
+#           mkdir -vp ~/.local/share/godot/export_templates/${GODOT_VERSION}.${GODOT_PATCH_VERSION}
+#           mv templates/* ~/.local/share/godot/export_templates/${GODOT_VERSION}.${GODOT_PATCH_VERSION}
+
+#           mv Godot_v${GODOT_VERSION}-${GODOT_PATCH_VERSION}_linux.x86_64 /usr/local/bin/godot
+
+#           rm -R templates/
+#           rm templates.tpz godot.zip
+#           ls -la /usr/local/bin
       
-      - name: Generate HTML5 artifacts
-        if: ${{ matrix.targetPlatform.name == 'html5'}}
-        uses: actions/upload-artifact@v4
-        with:
-          name: build-${{ matrix.targetPlatform.name }}
-          path: |
-            build-${{ matrix.targetPlatform.name }}
-          retention-days: 1
+#       - name: Setup Python
+#         uses: actions/setup-python@v5
+#         with:
+#           python-version: '3.10' 
+
+#       - name: Install GD Toolkit
+#         run: pip3 install "gdtoolkit==4.*"
+
+#       - name: Import Godot Project
+#         run: godot --headless --import
+
+#       - name: Lint
+#         run: pnpm exec nx affected -t lint
+
+#       - name: Test
+#         run: |
+#           export GODOT_BIN=/usr/local/bin/godot
+#           chmod +x addons/gdUnit4/runtest.sh
+#           pnpm exec nx affected -t test
+
+#       - name: Export Godot project
+#         run: |
+#           pnpm exec nx affected -t setup -- build-${{ matrix.targetPlatform.name }}
+#           pnpm exec nx affected -t build -- ${{ matrix.targetPlatform.name }} build-${{ matrix.targetPlatform.name }}/${{ matrix.targetPlatform.path }}
+      
+#       - name: Generate Win64 artifacts
+#         if: ${{ matrix.targetPlatform.name == 'win64'}}
+#         uses: actions/upload-artifact@v4
+#         with:
+#           name: build-${{ matrix.targetPlatform.name }}
+#           path: |
+#             build-${{ matrix.targetPlatform.name }}
+#             addons/**/build-${{ matrix.targetPlatform.name }}
+#           retention-days: 1
+      
+#       - name: Generate HTML5 artifacts
+#         if: ${{ matrix.targetPlatform.name == 'html5'}}
+#         uses: actions/upload-artifact@v4
+#         with:
+#           name: build-${{ matrix.targetPlatform.name }}
+#           path: |
+#             build-${{ matrix.targetPlatform.name }}
+#           retention-days: 1
  
-  deploy:
-    name: Deploy on Github Pages
-    needs: export
-    runs-on: ubuntu-latest
-    # runs-on: self-hosted
-    steps: 
-      - name: Download export artifacts
-        uses: actions/download-artifact@v4
-        with: 
-          name: build-html5
+#   deploy:
+#     name: Deploy on Github Pages
+#     needs: export
+#     runs-on: ubuntu-latest
+#     # runs-on: self-hosted
+#     steps: 
+#       - name: Download export artifacts
+#         uses: actions/download-artifact@v4
+#         with: 
+#           name: build-html5
 
-      - name: Setup Pages
-        uses: actions/configure-pages@v5
+#       - name: Setup Pages
+#         uses: actions/configure-pages@v5
 
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: '.'
+#       - name: Upload artifact
+#         uses: actions/upload-pages-artifact@v3
+#         with:
+#           path: '.'
 
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
+#       - name: Deploy to GitHub Pages
+#         id: deployment
+#         uses: actions/deploy-pages@v4

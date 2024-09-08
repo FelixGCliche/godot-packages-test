@@ -1,0 +1,17 @@
+name: Setup Godot
+description: Downloads Godot engine binary and export templates and set 
+inputs:
+  godot-version:
+    description: Godot version to use
+    required: true
+    default: '4.3'
+  godot-patch-version:
+    description: Godot patch to use (stable, rc, beta etc)
+    required: true
+    default: 'stable'
+runs:
+  using: docker
+  image: Dockerfile
+  args: 
+    - ${{ inputs.godot-version }}
+    - ${{ inputs.godot-patch-version }}
