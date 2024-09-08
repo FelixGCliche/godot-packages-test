@@ -1,34 +1,34 @@
-# name: Setup Godot
-# description: Downloads Godot engine binary and export templates and set 
-# inputs:
-#   godot-version:
-#     description: Godot version to use
-#     required: true
-#     default: '4.3'
-#   godot-patch-version:
-#     description: Godot patch to use (stable, rc, beta etc)
-#     required: true
-#     default: 'stable'
-# runs:
-#   using: docker
-#   image: Dockerfile
-#   args: 
-#     - ${{ inputs.godot-version }}
-#     - ${{ inputs.godot-patch-version }}
-
-
-name: 'Hello World'
-description: 'Greet someone and record the time'
+name: Setup Godot
+description: Downloads Godot engine binary and export templates and set 
 inputs:
-  who-to-greet:  # id of input
-    description: 'Who to greet'
+  godot-version:
+    description: Godot version to use
     required: true
-    default: 'World'
-outputs:
-  time: # id of output
-    description: 'The time we greeted you'
+    default: '4.3'
+  godot-patch-version:
+    description: Godot patch to use (stable, rc, beta etc)
+    required: true
+    default: 'stable'
 runs:
-  using: 'docker'
-  image: 'Dockerfile'
-  args:
-    - ${{ inputs.who-to-greet }}
+  using: docker
+  image: Dockerfile
+  args: 
+    - ${{ inputs.godot-version }}
+    - ${{ inputs.godot-patch-version }}
+
+
+# name: 'Hello World'
+# description: 'Greet someone and record the time'
+# inputs:
+#   who-to-greet:  # id of input
+#     description: 'Who to greet'
+#     required: true
+#     default: 'World'
+# outputs:
+#   time: # id of output
+#     description: 'The time we greeted you'
+# runs:
+#   using: 'docker'
+#   image: 'Dockerfile'
+#   args:
+#     - ${{ inputs.who-to-greet }}
