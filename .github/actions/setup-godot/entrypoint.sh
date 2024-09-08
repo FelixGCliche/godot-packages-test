@@ -1,5 +1,5 @@
 #!/bin/sh -l
-echo "Godot Version: $1.$2"
+# echo "Godot Version: $1.$2"
 # curl -L https://github.com/godotengine/godot/releases/download/$1-$2/Godot_v$1-$2_linux.x86_64.zip > godot.zip
 # curl -L https://github.com/godotengine/godot/releases/download/$1-$2/Godot_v$1-$2_export_templates.tpz > templates.tpz
 
@@ -14,3 +14,7 @@ echo "Godot Version: $1.$2"
 # rm -R templates/
 # rm templates.tpz godot.zip
 # ls -la /usr/local/bin
+
+echo "Hello $1"
+time=$(date)
+echo "time=$time" >> $GITHUB_OUTPUT
