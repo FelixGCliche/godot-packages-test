@@ -5,6 +5,7 @@
   "scripts": {
     "setup": "mkdir -vp",
     "build": "godot --headless --export-release",
+    "lint": "gdlint .",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Incredibold",

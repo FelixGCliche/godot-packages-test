@@ -5,7 +5,8 @@
   "license": "MIT",
   "scripts": {
     "setup": "mkdir -vp",
-    "build": "godot --headless --export-release"
+    "build": "godot --headless --export-release",
+    "lint": "gdlint src/"
   },
   "private": true,
   "dependencies": {},
