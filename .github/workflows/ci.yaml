@@ -81,7 +81,7 @@ jobs:
         run: pip3 install "gdtoolkit==4.*"
 
       - name: Import Godot Project
-        run: godot --headless -e -q --quit
+        run: godot --headless --import
 
       - name: Lint
         run: pnpm exec nx affected -t lint
