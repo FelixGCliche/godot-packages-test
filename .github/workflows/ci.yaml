@@ -29,6 +29,7 @@ jobs:
         with:
           godot-version: "${{env.GODOT_VERSION}}"
           godot-patch-version: "${{env.GODOT_PATCH_VERSION}}"
+      - run: godot --version
 # jobs:
 #   export:
 #     name: Export for ${{ matrix.targetPlatform.name }}
