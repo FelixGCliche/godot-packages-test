@@ -55,3 +55,6 @@ export.cfg
 # Project-specific ignores
 /build
 /addons/*/build
+
+# GdUnit ignores
+/reports

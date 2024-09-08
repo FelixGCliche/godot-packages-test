@@ -72,6 +72,26 @@ jobs:
           rm templates.tpz godot.zip
           ls -la /usr/local/bin
       
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10' 
+
+      - name: Install GD Toolkit
+        run: pip3 install "gdtoolkit==4.*"
+
+      - name: Import Godot Project
+        run: godot --headless -e -q --quit
+
+      - name: Lint
+        run: pnpm exec nx affected -t lint
+
+      - name: Test
+        run: |
+          export GODOT_BIN=/usr/local/bin/godot
+          chmod +x addons/gdUnit4/runtest.sh
+          pnpm exec nx affected -t test
+
       - name: Export Godot project
         run: |
           pnpm exec nx affected -t setup -- build-${{ matrix.targetPlatform.name }}
