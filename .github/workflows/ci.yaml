@@ -27,8 +27,7 @@ jobs:
       - name: Test
         uses: ./.github/actions/setup-godot
         with:
-          godot-version: ${{env.GODOT_VERSION}}
-          godot-patch-version: ${{env.GODOT_PATCH_VERSION }}
+          who-to-greet: "uwu"
 # jobs:
 #   export:
 #     name: Export for ${{ matrix.targetPlatform.name }}
